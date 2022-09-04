@@ -185,6 +185,15 @@ if (argv[0] == "init"){
 
     }
 
+    const activity_header_menu = await inquirer.prompt({
+        name: 'activity_header_menu',
+        type: 'input',
+        message: 'Titlebar Option Menu (Seprated By Space): ',
+
+    });
+
+ 
+
     var actname = activity_name.activity_name.replace(" ","").replace(",","");
     if (existsFile('activites_name_list.txt')){
         if(!readFile('activites_name_list.txt').includes(actname)){
@@ -208,6 +217,16 @@ if (argv[0] == "init"){
         });
     }else {
         actdata = actdata + 'no_template';
+    }
+
+    if (activity_header_menu.activity_header_menu != "") {
+        var opts = activity_header_menu.activity_header_menu.split(" ")
+        actdata = actdata + "|" + opts.length ;
+        opts.forEach(element => {
+            actdata = actdata + "|" + element;
+        });
+    }else{
+        actdata = actdata + "|no_menu";
     }
 
     createFile('Activity_'+actname+'.txt',actdata);

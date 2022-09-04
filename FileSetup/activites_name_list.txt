@@ -1,1 +1,1 @@
-MainActivity,HomeActivity
+MainActivity,HomeActivity,NewActivity,BaseActivity,ChatActivity
