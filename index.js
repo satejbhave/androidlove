@@ -247,7 +247,106 @@ if (argv[0] == "init"){
     ]);
     */
 
-}else{
+
+
+}
+else if(argv[0] == "modelclass"){
+
+    const classname = await inquirer.prompt({
+        name: 'classname',
+        type: 'input',
+        message: 'Class Name:',
+        default(){
+            return 'NewClass'
+        }
+    });
+
+    const classvariable = await inquirer.prompt({
+        name: 'classvariable',
+        type: 'input',
+        message: 'Variables (Seperated By Space)'+
+                    chalk.italic(chalk.yellow('\n\t(Default Is String) -i for Integer, -b for Bollean, -f for Float, -c for Custom'))+
+                    "\t :",
+
+    });
+
+    const classfunctions = await inquirer.prompt([
+      {
+        type: 'checkbox',
+        name: 'classfunctions',
+        message: 'Select Overriding Functions :',
+        choices: [
+          'Constructor', 'Get', 'Set'
+        ],
+      }
+    ]);
+
+    var tempArg = classvariable.classvariable.split(" ");
+    var variables = [];
+
+    for (let index = 0; index < tempArg.length; index++) {
+        const element = tempArg[index];
+        if (element == "-i"){
+            const ele2 = tempArg[index+1];
+            index++;
+            variables.push(['int',ele2]);
+        }else if (element == "-b"){
+            const ele2 = tempArg[index+1];
+            index++;
+            variables.push(['bollean',ele2])
+        }else if (element == "-f"){
+            const ele2 = tempArg[index+1];
+            index++;
+            variables.push(['float',ele2]);
+        }else if (element == "-c"){
+            const ele2 = tempArg[index+1];
+            const ele3 = tempArg[index+2];
+            index++;
+            index++;
+            variables.push([ele2,ele3]);
+        }else{
+            variables.push(['String',element])
+        }
+
+        
+    }
+
+    var classnamemain = classname.classname.replace(" ","").replace(",","");
+    if (existsFile('modelclass_name_list.txt')){
+        if(!readFile('modelclass_name_list.txt').includes(classnamemain)){
+            appendFile('modelclass_name_list.txt', ","+classnamemain);
+        }
+    }else{
+        appendFile('modelclass_name_list.txt',classnamemain);
+    }
+
+    var classdata = classname.classname + '|';
+
+    classdata = classdata + variables.length + '|';
+
+    variables.forEach(element => {
+        classdata = classdata + element[0] + '-'+ element[1] + '|';
+    });
+
+    classdata = classdata + classfunctions.classfunctions.length + '|';
+
+    for (let index = 0; index < classfunctions.classfunctions.length; index++) {
+        const element = classfunctions.classfunctions[index];
+        classdata = classdata + element + '|';
+        if(index != classfunctions.classfunctions.length -1){
+            classdata = classdata + '|';
+        }
+    }
+
+    createFile('Class_' + classnamemain + '.txt' , classdata);
+
+    
+
+
+
+
+}
+else{
     console.log(chalk.red("Command Not Found"));
 
     console.log(chalk.red("Please type node index.js "));

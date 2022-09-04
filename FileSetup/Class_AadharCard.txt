@@ -1,0 +1,1 @@
+AadharCard|5|String,name|String,address|String,phonenumber|Calender,birthdate|bollean,gender|2|Constructor||Get|
